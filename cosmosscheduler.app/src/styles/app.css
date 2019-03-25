@@ -1,0 +1,29 @@
+.app {
+  height: 90vh;
+  width: 100vw;
+}
+
+.app-logo,
+.app-logo-animated{
+  background: url('/images/logo.svg') no-repeat ;
+  background-size: 100px;
+  height: 100px;
+  width: 100px;
+  pointer-events: none;
+  border: none;
+}
+.app-logo-animated{
+  animation: app-logo-spin infinite 20s linear;
+}
+.app-link {
+  color: #61dafb;
+}
+
+@keyframes app-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

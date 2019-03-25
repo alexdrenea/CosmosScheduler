@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Generator: Adobe Illustrator 21.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   version="1.1"
+   id="Layer_1"
+   x="0px"
+   y="0px"
+   width="24px"
+   height="24px"
+   viewBox="0 0 24 24"
+   enable-background="new 0 0 24 24"
+   xml:space="preserve"
+   sodipodi:docname="CosmosDB-color.svg"
+   inkscape:version="0.92.4 (5da689c313, 2019-01-14)"><metadata
+   id="metadata3829"><rdf:RDF><cc:Work
+       rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
+         rdf:resource="http://purl.org/dc/dcmitype/StillImage" /><dc:title></dc:title></cc:Work></rdf:RDF></metadata><defs
+   id="defs3827" /><sodipodi:namedview
+   pagecolor="#ffffff"
+   bordercolor="#666666"
+   borderopacity="1"
+   objecttolerance="10"
+   gridtolerance="10"
+   guidetolerance="10"
+   inkscape:pageopacity="0"
+   inkscape:pageshadow="2"
+   inkscape:window-width="3360"
+   inkscape:window-height="1780"
+   id="namedview3825"
+   showgrid="false"
+   inkscape:zoom="24.159482"
+   inkscape:cx="3.8398966"
+   inkscape:cy="0.84445161"
+   inkscape:window-x="-12"
+   inkscape:window-y="-12"
+   inkscape:window-maximized="1"
+   inkscape:current-layer="Layer_1" />
+<path
+   fill="#B8D432"
+   d="M8.147,19.01c1.73-1.219,3.716-2.861,5.859-5.004c2.201-2.201,3.819-4.167,5.008-5.853  C17.654,5.678,15.024,4,12,4c-4.418,0-8,3.582-8,8C4,15.021,5.675,17.649,8.147,19.01z"
+   id="path3806" />
+<path
+   fill="#B8D432"
+   d="M16.127,16.127c-1.43,1.429-2.888,2.725-4.318,3.863C11.873,19.992,11.936,20,12,20c4.418,0,8-3.582,8-8  c0-0.065-0.008-0.127-0.01-0.191C18.82,13.276,17.513,14.741,16.127,16.127z"
+   id="path3808" />
+<path
+   fill="#0078D7"
+   d="M23.417,0.583c-0.342-0.342-0.839-0.504-1.461-0.504c-1.703,0-4.348,1.225-7.312,3.328  c0.389,0.121,0.768,0.262,1.133,0.433c2.682-1.821,4.904-2.761,6.18-2.761c0.247,0,0.579,0.037,0.754,0.211  c0.947,0.947-0.966,6.391-7.997,13.422c-5.389,5.389-10.452,8.208-12.668,8.208c-0.248,0-0.579-0.037-0.754-0.211  c-0.626-0.626,0.011-3.228,2.542-6.949c-0.167-0.36-0.306-0.734-0.425-1.118c-2.872,4.047-4.1,7.497-2.824,8.774  c0.342,0.342,0.839,0.504,1.461,0.504c2.819,0,8.21-3.337,13.375-8.501C21.725,9.114,25.305,2.472,23.417,0.583z"
+   id="path3810" />
+<path
+   d="m 4.6622659,1.5314898 c 0,1.8089759 -1.3462057,3.2756467 -3.0066012,3.2756467 1.6603955,0 3.0066012,1.4666708 3.0066012,3.2756467 0,-1.8089759 1.3462057,-3.2756467 3.0066012,-3.2756467 -1.6603955,0 -3.0066012,-1.4666708 -3.0066012,-3.2756467 z"
+   id="path3812"
+   inkscape:connector-curvature="0"
+   style="fill:#0078d7;stroke-width:0.7845605" />
+
+<path
+   fill="#59B4D9"
+   d="M8.639,13.194H8.312c0.041-0.163,0.061-0.327,0.061-0.51c0-1.205-0.98-2.184-2.184-2.184H4.146  C4.053,10.986,4,11.487,4,12c0,2.164,0.863,4.123,2.258,5.563h2.381c1.205,0,2.184-0.98,2.184-2.184  C10.823,14.174,9.843,13.194,8.639,13.194z"
+   id="path3816" />
+<path
+   fill="#59B4D9"
+   d="M14.001,14.011c0.002-0.002,0.003-0.003,0.005-0.005c0.296-0.296,0.572-0.584,0.847-0.871  C14.48,13.323,14.178,13.631,14.001,14.011z"
+   id="path3818" />
+<path
+   fill="#59B4D9"
+   d="M16.127,16.127c-0.936,0.936-1.885,1.815-2.831,2.632c0.336,0.333,0.797,0.54,1.304,0.54h0.665  c2.519-1.129,4.346-3.519,4.676-6.37H19.07C18.147,14.017,17.159,15.094,16.127,16.127z"
+   id="path3820" />
+<path
+   fill="#59B4D9"
+   d="M12.661,11.234h3.926c0.958-1.107,1.759-2.134,2.422-3.073c-0.799-1.452-2.032-2.633-3.531-3.358h-0.449  c-0.817,0-1.47,0.653-1.47,1.47c0,0.122,0.02,0.265,0.061,0.388h-0.939c-1.286,0-2.307,1.021-2.307,2.286  S11.395,11.234,12.661,11.234z"
+   id="path3822" />
+<g
+   transform="translate(-37.584071,-24.013798)"
+   id="Layer_1-6"><g
+     id="Azure" /><g
+     id="BizTalk_Services"
+     transform="translate(37.3575,-2500.2)" /><g
+     id="Key_Vault" /><g
+     id="Mobile_Engagement" /><g
+     id="Office_subscription"><g
+       id="Office_subscription_1_" /></g></g><g
+   transform="translate(-37.584071,-24.013798)"
+   id="Layer_57" /><g
+   id="paths-2"
+   transform="matrix(0.14006091,0,0,0.13218908,9.2032818,11.919115)"><g
+     id="Access_control-0" /><g
+     id="Azure_active_directory-5" /><g
+     id="API_Management-2" /><g
+     id="Azure_automation-2" /><g
+     id="Azure_SQL_database-3" /><g
+     id="Azure_subscription-9" /><g
+     id="Backup_service-7" /><g
+     id="Bitbucket_code_source-1" /><g
+     id="Azure_cache-1" /><g
+     id="Content_delivery_network__x28_CDN_x29_-8" /><g
+     id="Cloud_service-9" /><g
+     id="CodePlex-0" /><g
+     id="Dropbox_code_source-9" /><g
+     id="Express_route-0" /><g
+     id="Git_repository-9" /><g
+     id="GitHub_code-3" /><g
+     id="HD_Insight-8" /><g
+     id="Health_monitoring-6" /><g
+     id="Healthy-6" /><g
+     id="BizTalk_hybrid_connection-0" /><g
+     id="Hybrid_connection_manager_for_BizTalk_hybrid_connection-9" /><g
+     id="Hyper-V_recovery_manager-3" /><g
+     id="Machine_learning-8" /><g
+     id="Media_services-2" /><g
+     id="Microsoft_account-1" /><g
+     id="Mobile_services-6" /><g
+     id="Multi-factor_authentication-5" /><g
+     id="MySQL_database-8" /><g
+     id="Notification_hub-9" /><g
+     id="Notification_topic-4" /><g
+     id="Cloud_Office_365-9" /><g
+     id="Office_365-2" /><g
+     id="OS_image-7" /><g
+     id="Remote_app-5" /><g
+     id="Task_scheduler-0"><g
+       id="g256-0"><path
+         d="m 77.4,67.5 v 1.5 2.4 c -0.3,0 -1.5,-0.2 -1.7,-0.3 C 74.9,70.9 74.1,70.7 73.3,70.4 73,70.3 72.8,70.2 72.6,70.1 L 72.2,70 71.8,69.8 71.5,69.6 71.1,69.4 C 70.9,69.3 70.6,69.1 70.4,69 69.5,68.4 68.6,67.7 67.8,66.9 67,66.1 66.3,65.2 65.7,64.2 c -0.6,-1 -1.1,-2 -1.6,-3.1 -0.8,-2.2 -1.2,-4.5 -1,-6.8 0.2,-2.3 0.8,-4.6 1.9,-6.5 1.1,-2 2.5,-3.7 4.2,-5 0.8,-0.7 1.7,-1.2 2.6,-1.7 0.9,-0.5 1.8,-0.8 2.6,-1.1 1.8,-0.6 3.5,-0.9 5,-0.9 1.5,-0.1 2.9,0.1 4,0.3 1.1,0.2 1.9,0.5 2.5,0.7 0.3,0.1 0.5,0.2 0.7,0.2 l 0.2,0.1 v 0 c 0.1,0 0.2,0 0.3,-0.1 0.1,-0.1 0,-0.2 -0.1,-0.3 l -0.2,-0.1 c -0.1,-0.1 -0.4,-0.2 -0.6,-0.3 -0.6,-0.3 -1.4,-0.7 -2.5,-1 -1.1,-0.4 -2.5,-0.7 -4.2,-0.8 -1.6,-0.1 -3.5,0 -5.6,0.5 -2,0.5 -4.1,1.4 -6.1,2.7 -2,1.3 -3.8,3.2 -5.2,5.4 -1.4,2.2 -2.4,4.8 -2.9,7.6 -0.2,1.4 -0.3,2.8 -0.1,4.3 0.1,1.4 0.4,2.9 0.8,4.2 0.4,1.4 1,2.7 1.8,4 0.7,1.2 1.6,2.4 2.6,3.5 1,1 2.1,2 3.3,2.7 0.3,0.2 0.6,0.4 0.9,0.6 l 0.5,0.3 0.5,0.3 0.4,0.2 0.5,0.2 c 0.3,0.1 0.6,0.3 0.9,0.4 1.3,0.5 2.7,0.9 4,1.1 0.5,0.1 1.2,0.1 1.7,0.2 v 4.2 L 83.4,74 Z"
+         id="path252-3"
+         inkscape:connector-curvature="0"
+         style="fill:#0078d7" /><path
+         d="m 79.2,41.8 c -7.3,0 -12.9,5.9 -12.9,13.2 0,6.1 4,11.2 9.6,12.7 v -1.1 c 0,-0.5 0.4,-1 0.9,-1.2 0.2,-0.1 -0.2,0 0,0 0.3,0 0.7,0 0.9,0.3 l 2.5,2.5 C 87.1,67.7 92.5,62 92.5,55 c 0,-7.3 -6,-13.2 -13.3,-13.2 z m -9.8,14.3 c -0.6,0 -1.2,-0.5 -1.2,-1.2 0,-0.6 0.5,-1.2 1.2,-1.2 0.6,0 1.2,0.5 1.2,1.2 -0.1,0.7 -0.6,1.2 -1.2,1.2 z m 9.8,-12.8 c 0.6,0 1.2,0.5 1.2,1.2 0,0.6 -0.5,1.2 -1.2,1.2 -0.6,0 -1.2,-0.5 -1.2,-1.2 0.1,-0.6 0.6,-1.2 1.2,-1.2 z m 6.9,18.4 -0.1,0.1 c -0.8,0.8 -2.2,0.8 -3,0 l -5.4,-5.4 c -0.5,-0.5 -0.2,-1.1 -0.2,-1.7 v -0.1 -4.9 c 0,-1.2 1,-2.1 2.1,-2.1 h 0.4 c 1.2,0 2.1,1 2.1,2.1 V 54 l 4.7,4.7 c 0.9,0.8 0.3,2.2 -0.6,3 z m 3.6,-5.6 c -0.6,0 -1.2,-0.5 -1.2,-1.2 0,-0.6 0.5,-1.2 1.2,-1.2 0.6,0 1.2,0.5 1.2,1.2 0,0.7 -0.5,1.2 -1.2,1.2 z"
+         id="path254-8"
+         inkscape:connector-curvature="0"
+         style="fill:#0078d7" /></g></g></g></svg>

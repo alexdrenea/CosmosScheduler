@@ -1,0 +1,89 @@
+[
+    {
+        "accountName": "alex-poc",
+        "accountKey": "********",
+        "databases": [
+            {
+                "name": "database",
+                "collections": [
+                    {
+                        "isActive": true,
+                        "currentRUs": 0,
+                        "name": "test",
+                        "scheduleItems": [
+                            {
+                                "startHourUTC": 21,
+                                "requestUnits": 600
+                            },
+                            {
+                                "startHourUTC": 12,
+                                "requestUnits": 500
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "name": "db2",
+                "collections": [
+                    {
+                        "isActive": true,
+                        "currentRUs": 0,
+                        "name": "tst2",
+                        "scheduleItems": [
+                            {
+                                "startHourUTC": 6,
+                                "requestUnits": 400
+                            },
+                            {
+                                "startHourUTC": 21,
+                                "requestUnits": 400
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "accountName": "mlsdatabase",
+        "accountKey": "********",
+        "databases": [
+            {
+                "name": "mlsdatabase",
+                "collections": [
+                    {
+                        "isActive": true,
+                        "currentRUs": 0,
+                        "name": "core",
+                        "scheduleItems": [
+                            {
+                                "startHourUTC": 18,
+                                "requestUnits": 400
+                            },
+                            {
+                                "startHourUTC": 12,
+                                "requestUnits": 500
+                            }
+                        ]
+                    },
+                    {
+                        "isActive": true,
+                        "currentRUs": 0,
+                        "name": "core2",
+                        "scheduleItems": [
+                            {
+                                "startHourUTC": 20,
+                                "requestUnits": 400
+                            },
+                            {
+                                "startHourUTC": 12,
+                                "requestUnits": 500
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+]

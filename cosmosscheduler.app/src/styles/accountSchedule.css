@@ -1,0 +1,19 @@
+.schedule-items--container{
+  display: flex;
+  align-items: left;
+  margin: 0 20px;
+  padding: 0;
+  list-style: none;
+  flex-flow: row wrap;
+  /* This aligns items to the end line on main-axis */
+  justify-content: flex-start;
+}
+
+
+.schedule-item {
+  text-align: center;
+  border: 1px;
+  border-color: azure;
+  border-style: solid;
+  margin: 5px;
+}
