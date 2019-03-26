@@ -1,5 +1,6 @@
 import React from "react";
 import "../styles/accountSchedule.css";
+import SweetAlert from 'react-bootstrap-sweetalert';
 
 import { Formik, Form, Field, FieldArray, ErrorMessage } from "formik";
 
@@ -8,10 +9,19 @@ class AccountSchedule extends React.Component {
     super(props, context);
 
     this.state = {
-      isEditing: false,
+      isEditing: this.props.isEditing,
+      isNewAccount: this.props.isNewAccount,
       account: this.props.account,
+      alert: null
     };
   }
+
+  _removeAccount(){
+    if (this.props.deleteCallback){
+      this.props.deleteCallback(this.state.account.accountName);
+    }
+  }
+
 
   _getEmptyDatabase() {
     return {
@@ -56,15 +66,46 @@ class AccountSchedule extends React.Component {
       this.props.saveCallback(values.data).then(
         (result) =>{
           if (result) {
+            if (this.props.closeCallback){
+              this.props.closeCallback();
+            } else {
             this.setState({
               account: values.data,
               isEditing: false 
             });
+            }
           } else {
             alert("failed to save");
           }
         }
       )
+  }
+
+  showAlert(title, message, callBack, style) {
+    this.setState({
+        alert: (
+            <SweetAlert 
+                warning
+                showCancel
+                confirmBtnText = "Yes"
+                cancelBtnText = "No"
+                confirmBtnBsStyle= {style ? style : "warning"}
+                cancelBtnBsStyle = "default"
+                customIcon = "thumbs-up.jpg"
+                title = {title}
+                onConfirm = {callBack()}
+                onCancel = {this.hideAlert}
+            >
+            {message}
+            </SweetAlert>
+        )            
+    });
+  }
+
+  hideAlert = () => {
+      this.setState({
+          alert: null
+      });
   }
 
   _renderAccountEdit(account, isNewAccount) {
@@ -84,8 +125,15 @@ class AccountSchedule extends React.Component {
                 Account Name: 
                 <Field name="data.accountName" placeholder="Account Name" validate={this.validateRequired}/>
                 <ErrorMessage component="div" className="error" name="data.accountName"/>
-                <div>Account Key: ******</div>
-                {/* todo: is New account - enter key here*/}
+                {isNewAccount ? 
+                  <div>
+                    Account Key:
+                    <Field name="data.accountKey" placeholder="Account Key" validate={this.validateRequired}/>
+                    <ErrorMessage component="div" className="error" name="data.accountKey"/>
+                  </div>
+                  : 
+                  <div>Account Key: ******</div>
+                }               
                 <FieldArray //Databases
                   name="data.databases"
                   render={arrayHelpers => (
@@ -142,7 +190,13 @@ class AccountSchedule extends React.Component {
                   )}
                 />
                 <button type="submit" /*disabled={formProps.isSubmitting}*/>Save</button>
-                <button onClick={() => this.setState({ isEditing: false })}>Cancel</button>
+                <button onClick={() =>{
+                  if (this.props.closeCallback){
+                    this.props.closeCallback();
+                  } else {
+                    this.setState({ isEditing: false })         
+                  }
+                }}>Cancel</button>
               </Form>
             );
           }}
@@ -180,19 +234,21 @@ class AccountSchedule extends React.Component {
         })}
 
         <div>
-          <button onClick={() => this.setState({ isEditing: true })}>
-            Edit
-          </button>
+          <button onClick={() => this.setState({ isEditing: true })}>Edit</button>
+          {/* <button onClick={() =>  this.props.deleteCallback(account.accountName)}>Remove</button> */}
+          <button onClick={() => this.showAlert('Remove account', 'Are you sure you want to remove the account?', () => this._removeAccount.bind(this), null) }>Remove</button>
+
+          {this.state.alert}
         </div>
       </ul>
     );
   }
 
+
   render() {
-    const account = this.state.account;
     return this.state.isEditing
-      ? this._renderAccountEdit(account, false)
-      : this._renderAccount(account);
+      ? this._renderAccountEdit(this.state.account, this.state.isNewAccount)
+      : this._renderAccount(this.state.account);
   }
 }
 
