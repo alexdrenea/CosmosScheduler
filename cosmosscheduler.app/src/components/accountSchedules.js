@@ -1,10 +1,14 @@
 import React from 'react';
 import AccountSchedule from './accountSchedule'
+import AccountScheduleEdit from './accountScheduleEdit';
+import SweetAlert from 'react-bootstrap-sweetalert'
 import axios from 'axios';
 import Popup from 'reactjs-popup'
 import '../styles/accountSchedule.css';
 
+import {getNewAccount} from '../actions/accountSchedule'
 import {API_URL, API_HEADERS} from '../api/const';
+
 
 class AccountSchedules extends React.Component {
   constructor(props, context) {
@@ -13,6 +17,8 @@ class AccountSchedules extends React.Component {
     this.state = {
         accounts: this.props.data,
         loading: true,
+        alert: null,
+        editingAccount: null
     };
   }
   
@@ -23,7 +29,6 @@ class AccountSchedules extends React.Component {
     });
   }
 
-
   _addAccount = payload => {
     return axios.post(API_URL,  payload, API_HEADERS).then(
       (result) => { 
@@ -32,11 +37,12 @@ class AccountSchedules extends React.Component {
         this.setState({
           accounts: newData
         });
-        return true;
+        return {success: true, data: result};
       },
       (err) => { 
         console.log(err);
-        return false;
+        this.showSweetAlert("Failed to add account", `Error: ${err.message}`, "fail", null, "default", "Ok", false, "default", "");
+        return {success: false, data: err.message};
       }
     );
   }
@@ -44,11 +50,15 @@ class AccountSchedules extends React.Component {
   _updateAccount = payload => {
     return axios.put(API_URL,  payload, API_HEADERS).then(
       (result) => { 
-        return true;
+        let newData = this.state.accounts;
+        const updatedAccount = newData.find((acc)=> { return acc.accountName.toLowerCase() === payload.accountName.toLowerCase() });
+        newData[newData.indexOf(updatedAccount)] = payload;
+        return {success: true, data: result};
       },
       (err) => { 
         console.log(err);
-        return false;
+        this.showSweetAlert("Failed to update account", `Error: ${err.message}`, "fail", null, "default", "Ok", false, "default", "");
+        return {success: false, data: err.message};
       }
     );
   }
@@ -65,39 +75,92 @@ class AccountSchedules extends React.Component {
             accounts: newData
           });
         }
-        return true;
+        return {success: true, data: result};
       },
       (err) => { 
         console.log(err);
-        return false;
+        this.showSweetAlert("Failed to remove account", `Error: ${err.message}`, "fail", null, "default", "Ok", false, "default", "");
+        return {success: false, data: err.message};
       }
     );
   }
   
+
+  showSweetAlert(title, message, style, confirmCallBack, confirmButtonStyle, confirmButtonText, showCancel, cancelButtonStyle, cancelButtonText) {
+    this.setState({
+        alert: (
+            <SweetAlert 
+                success = {style === "success"}
+                danger = {style === "fail"}
+                info = {style === "confirm"}
+                showCancel = {showCancel}
+                confirmBtnText = {confirmButtonText}
+                cancelBtnText = {cancelButtonText}
+                confirmBtnBsStyle= {confirmButtonStyle}
+                cancelBtnBsStyle = {cancelButtonStyle}
+                title = {title}
+                onConfirm = { ()=> {
+                  if (confirmCallBack) confirmCallBack();                 
+                  this.setState({alert: null});
+                }}
+                onCancel = {()=> this.setState({alert: null})}
+            >
+            {message}
+            </SweetAlert>
+        )            
+    });
+  }
+
+  renderEditPopup(){
+    if (this.state.editingAccount)
+    {  
+      const isNewAccount = !this.state.accounts.find((acc)=> acc.accountName === this.state.editingAccount.accountName);
+      return(
+        <Popup closeOnDocumentClick={false} open={true} onClose={()=>this.setState({editingAccount: null})} modal>
+        {close => (
+          <div className="modal">
+            <div className="header"> {isNewAccount ? "Add new Account" : "Edit account"} </div>
+            <div className="content">
+              <AccountScheduleEdit 
+                    key="account_edit" 
+                    data={this.state.editingAccount} 
+                    isNewAccount={isNewAccount}
+                    saveCallback={isNewAccount ? this._addAccount.bind(this) : this._updateAccount.bind(this)} 
+                    closeCallback={close}/>
+            </div>
+            <div className="actions"></div>
+          </div>
+        )}
+      </Popup>
+      );
+    }
+  }
+
   render() {
     const accounts = this.state.accounts;
     if (this.state.loading) return "";
     return (
+      <div>
         <ul className="schedule-items--container">
             {accounts.map(account=>{
-              return <AccountSchedule key={account.accountName} account={account} saveCallback={this._updateAccount.bind(this)} deleteCallback={this._removeAccount.bind(this)}/>
+              return <AccountSchedule 
+                        key={account.accountName} 
+                        account={account} 
+                        onEdit={()=>this.setState({editingAccount: account})} 
+                        onRemove={()=> this.showSweetAlert("Remove account", "Are you sure you want to remove this account", "confirm",  () => {this._removeAccount(account.accountName)}, "danger","Yes",true,"default","No")}/>
             })}
-           
-           <Popup closeOnDocumentClick={false} trigger={<button className="button"> Add new account </button>} modal>
-              {close => (
-                <div className="modal">
-                  <div className="header"> Add new Account </div>
-                  <div className="content">
-                    <AccountSchedule key="new_account" account={ {databases:[]}} isNewAccount={true} isEditing={true} saveCallback={this._addAccount.bind(this)} closeCallback={close}/>
-                  </div>
-                  <div className="actions"></div>
-                </div>
-              )}
-            </Popup>
+            
+            <button className="button" onClick={()=>this.setState({editingAccount: getNewAccount()})}>Add</button>
+
+            {this.renderEditPopup()}
+
         </ul>
+        {this.state.alert}
+      </div>
     );
   }
     
 }
+
 
 export default AccountSchedules
