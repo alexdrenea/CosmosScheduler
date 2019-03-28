@@ -56,8 +56,6 @@ namespace CosmosScheduler
             var scaleDownDelayBeforeExactHourInSeconds = int.Parse(Environment.GetEnvironmentVariable("ScaleDownDelayBeforeExactHourInSeconds", EnvironmentVariableTarget.Process));
             var scaleUpDelayAfterExactHourInSeconds = int.Parse(Environment.GetEnvironmentVariable("ScaleUpDelayAfterExactHourInSeconds", EnvironmentVariableTarget.Process));
 
-            var scheduleHour = DateTime.UtcNow.Hour + 1;
-
             //Get all entities from table
             var tableEntities = await inTable.ExecuteQuerySegmentedAsync(new TableQuery<ScheduleTableEntity>(), null);
             //Convert them to the schedule model
@@ -65,14 +63,14 @@ namespace CosmosScheduler
             //Get a list of resize requests that are due this hour
             var resizesThisHour = schedules.SelectMany(r =>
                                         r.Databases.SelectMany(d =>
-                                            d.Collections.Where(c => c.IsActive && c.ScheduleItems.Any(Util.IsScheduleDueThisHour))
+                                            d.Collections.Where(c => c.IsActive && c.Schedules.Any(s=> s.IsScheduleDueNextHour(c.Timezone)))
                                                          .Select(c => new ScaleRequest
                                                          {
                                                              AccountKey = r.AccountKey,
                                                              AccountName = r.AccountName,
                                                              Database = d.Name,
                                                              Collection = c.Name,
-                                                             RequestedRUs = c.ScheduleItems.FirstOrDefault(Util.IsScheduleDueThisHour).RequestUnits
+                                                             RequestedRUs = c.Schedules.FirstOrDefault(s => s.IsScheduleDueNextHour(c.Timezone)).RequestUnits
                                                          }))).ToArray();
 
             //Populate resize items with current RUs
@@ -82,7 +80,7 @@ namespace CosmosScheduler
             }
 
 
-            var secondsToExactHour = (60 - DateTime.Now.Minute)*60 + (60 - DateTime.Now.Second);
+            var secondsToExactHour = (60 - DateTime.Now.Minute) * 60 + (60 - DateTime.Now.Second);
 
             //put requests in appropriate queues
             foreach (var r in resizesThisHour)

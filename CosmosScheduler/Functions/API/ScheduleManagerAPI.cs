@@ -68,6 +68,10 @@ namespace CosmosScheduler.Functions.API
             if (tableEntity != null)
                 return new ConflictObjectResult($"Account with name '{scheduleRequest.AccountName.ToLower()}' already configured");
 
+            var errors = scheduleRequest.Validate();
+            if (errors.Any())
+                return new BadRequestObjectResult($"Invalid Schedule object provided{Environment.NewLine}{string.Join(Environment.NewLine, errors)}");
+
             var success = await AddOrUpdateTableEntity(table, scheduleRequest);
 
             scheduleRequest.AccountKey = CLIENT_ACCOUNTKEY_MASK;
@@ -92,6 +96,12 @@ namespace CosmosScheduler.Functions.API
             //we'll be replacing the whole table entry, make sure we update the key since the client sends the masked value with the request.
             var tableSchedule = JsonConvert.DeserializeObject<Schedule>(tableEntity.Schedule);
             scheduleRequest.AccountKey = tableSchedule.AccountKey;
+
+            var errors = scheduleRequest.Validate();
+            if (errors.Any())
+            {
+                return new BadRequestObjectResult($"Invalid Schedule object provided {Environment.NewLine}{string.Join(Environment.NewLine, errors)}");
+            }
 
             var success = await AddOrUpdateTableEntity(table, scheduleRequest);
 
@@ -154,10 +164,5 @@ namespace CosmosScheduler.Functions.API
             return result.HttpStatusCode.IsHttpSuccessCode();
         }
 
-
-        private static bool IsHttpSuccessCode(this int statusCode)
-        {
-            return statusCode >= 200 && statusCode <= 299;
-        }
     }
 }

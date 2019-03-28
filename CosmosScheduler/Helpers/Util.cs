@@ -10,7 +10,6 @@ namespace CosmosScheduler.Helpers
 {
     public static class Util
     {
-
         public static string GetEndpointFromAccountName(string accountName)
         {
             return $"https://{accountName}.documents.azure.com:443";
@@ -48,12 +47,31 @@ namespace CosmosScheduler.Helpers
             }
         }
 
-        public static bool IsScheduleDueThisHour(ScheduleConfiguration sc)
+        /// <summary>
+        /// Given a schedule and the timezone, return a value indicating if the schedule is due this hour considering the timezone it's provided in
+        /// </summary>
+        /// <param name="sc"></param>
+        /// <param name="timezone"></param>
+        /// <returns>If an invalid timezone is provided, returns false.</returns>
+        public static bool IsScheduleDueNextHour(this ScheduleConfiguration sc, string timezone)
         {
-            //Todo: update this to take timezone into account
-            var now = DateTime.UtcNow.Hour + 1;
-
-            return now == sc.StartHourUTC;
+            try
+            {
+                //scheduler runs a few minutes before the exact hour. Check if next hour is part of the schedule
+                var hour = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTime.UtcNow, timezone).Hour + 1;
+                return hour == sc.StartHour;
+            }
+            catch (Exception)
+            {
+                //TODO: log
+                return false;
+            }
         }
+
+        public static bool IsHttpSuccessCode(this int statusCode)
+        {
+            return statusCode >= 200 && statusCode <= 299;
+        }
+
     }
 }
