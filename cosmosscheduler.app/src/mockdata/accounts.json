@@ -10,13 +10,14 @@
                         "isActive": true,
                         "currentRUs": 0,
                         "name": "test",
-                        "scheduleItems": [
+                        "timezone": "Eastern Standard Time",
+                        "schedules": [
                             {
-                                "startHourUTC": 21,
+                                "startHour": 21,
                                 "requestUnits": 600
                             },
                             {
-                                "startHourUTC": 12,
+                                "startHour": 12,
                                 "requestUnits": 500
                             }
                         ]
@@ -30,13 +31,14 @@
                         "isActive": true,
                         "currentRUs": 0,
                         "name": "tst2",
-                        "scheduleItems": [
+                        "timezone": "Eastern Standard Time",
+                        "schedules": [
                             {
-                                "startHourUTC": 6,
+                                "startHour": 6,
                                 "requestUnits": 400
                             },
                             {
-                                "startHourUTC": 21,
+                                "startHour": 21,
                                 "requestUnits": 400
                             }
                         ]
@@ -56,13 +58,14 @@
                         "isActive": true,
                         "currentRUs": 0,
                         "name": "core",
-                        "scheduleItems": [
+                        "timezone": "Eastern Standard Time",
+                        "schedules": [
                             {
-                                "startHourUTC": 18,
+                                "startHour": 18,
                                 "requestUnits": 400
                             },
                             {
-                                "startHourUTC": 12,
+                                "startHour": 12,
                                 "requestUnits": 500
                             }
                         ]
@@ -71,13 +74,14 @@
                         "isActive": true,
                         "currentRUs": 0,
                         "name": "core2",
-                        "scheduleItems": [
+                        "timezone": "Pacific Standard Time",
+                        "schedules": [
                             {
-                                "startHourUTC": 20,
+                                "startHour": 20,
                                 "requestUnits": 400
                             },
                             {
-                                "startHourUTC": 12,
+                                "startHour": 12,
                                 "requestUnits": 500
                             }
                         ]

@@ -1,8 +1,14 @@
 import React from "react";
-import "../styles/accountSchedule.css";
 import SweetAlert from 'react-bootstrap-sweetalert';
-
+import Select from 'react-select'
+import TimePicker from 'react-bootstrap-time-picker'
 import { Formik, Form, Field, FieldArray, ErrorMessage } from "formik";
+
+import timezonesjson from '../timezones.json';
+import "../styles/accountSchedule.css";
+
+
+const timeZones = timezonesjson.map((value)=>{return {label: value.text, value: value.value}});
 
 class AccountSchedule extends React.Component {
   constructor(props, context) {
@@ -14,6 +20,8 @@ class AccountSchedule extends React.Component {
       account: this.props.account,
       alert: null
     };
+
+    //this.timeZones = timezonesjson.map((value)=>{return {label: value.text, value: value.value}});
   }
 
   _removeAccount(){
@@ -33,7 +41,7 @@ class AccountSchedule extends React.Component {
   _getEmptyCollection() {
     return {
       name: "",
-      scheduleItems: []
+      schedules: []
     };
   }
 
@@ -62,24 +70,6 @@ class AccountSchedule extends React.Component {
     return error;
   }
 
-  submitForm(values) {
-      this.props.saveCallback(values.data).then(
-        (result) =>{
-          if (result) {
-            if (this.props.closeCallback){
-              this.props.closeCallback();
-            } else {
-            this.setState({
-              account: values.data,
-              isEditing: false 
-            });
-            }
-          } else {
-            alert("failed to save");
-          }
-        }
-      )
-  }
 
   showAlert(title, message, callBack, style) {
     this.setState({
@@ -108,7 +98,31 @@ class AccountSchedule extends React.Component {
       });
   }
 
+
+  submitForm(values) {
+    console.log(values);
+    this.props.saveCallback(values.data).then(
+      (result) =>{
+        if (result) {
+          if (this.props.closeCallback){
+            this.props.closeCallback();
+          } else {
+          this.setState({
+            account: values.data,
+            isEditing: false 
+          });
+          }
+        } else {
+          alert("failed to save");
+        }
+      }
+    )
+  }
+
+
+
   _renderAccountEdit(account, isNewAccount) {
+    
     return (
       <ul className="schedule-item">
         <Formik
@@ -119,7 +133,11 @@ class AccountSchedule extends React.Component {
           onSubmit={values => this.submitForm(values)}
           //validateOnChange= {false}
           //validateOnBlur = {false}
-          render={formProps => {
+          render = { formProps => {
+            console.log(formProps);
+            console.log(formProps.values);
+            //console.log(formProps.values.data.databases[0].collections[0])
+            //console.log(formProps.values.data.databases[0].collections[0].schedules)
             return (
               <Form>
                 Account Name: 
@@ -144,6 +162,7 @@ class AccountSchedule extends React.Component {
                             Database: 
                             <Field name={`data.databases.${dbIndex}.name`} validate={this.validateRequired}/>
                             <ErrorMessage component="div" className="error" name={`data.databases.${dbIndex}.name`} />
+                           
                             <FieldArray //Collections
                               name={`data.databases.${dbIndex}.collections`}
                               render={arrayHelpers => (
@@ -153,18 +172,33 @@ class AccountSchedule extends React.Component {
                                       Collection:
                                       <Field name={`data.databases.${dbIndex}.collections.${colIndex}.name`} validate={this.validateRequired}/>
                                       <ErrorMessage component="div" className="error" name={`data.databases.${dbIndex}.collections.${colIndex}.name`}/>
+                                      <MySelect
+                                        propName={`data.databases.${dbIndex}.collections.${colIndex}.timezone`}
+                                        value={formProps.values.data.databases[dbIndex].collections[colIndex].timezone}
+                                        onChange={formProps.setFieldValue}
+                                        onBlur={formProps.setFieldTouched}
+                                      />
+
                                       <FieldArray //Schedules
-                                        name={`data.databases.${dbIndex}.collections.${colIndex}.scheduleItems`}
+                                        name={`data.databases.${dbIndex}.collections.${colIndex}.schedules`}
                                         render={arrayHelpers => (
                                           <div>
-                                            {formProps.values.data.databases[dbIndex].collections[colIndex].scheduleItems.map(
+                                            {formProps.values.data.databases[dbIndex].collections[colIndex].schedules.map(
                                               (schedule, schedIndex) => (
                                                 <div key={`sched.${schedIndex}`}>
                                                   Start hour:{" "}
-                                                  <Field name={`data.databases.${dbIndex}.collections.${colIndex}.scheduleItems.${schedIndex}.startHourUTC`}/>
+                                                  {/* <Field name={`data.databases.${dbIndex}.collections.${colIndex}.schedules.${schedIndex}.startHour`}/> */}
+                                                  <TimePicker 
+                                                    onChange={(value)=>formProps.setFieldValue(`data.databases.${dbIndex}.collections.${colIndex}.schedules.${schedIndex}.startHour`, value/3600) } 
+                                                    //onBlur={formProps.setFieldTouched(`data.databases.${dbIndex}.collections.${colIndex}.schedules.${schedIndex}.startHour`)}
+                                                    start="00:00" 
+                                                    end="23:00" 
+                                                    step={60}
+                                                    value={formProps.values.data.databases[dbIndex].collections[colIndex].schedules[schedIndex].startHour * 3600} 
+                                                  />
                                                   Request Units:{" "}
-                                                  <Field name={`data.databases.${dbIndex}.collections.${colIndex}.scheduleItems.${schedIndex}.requestUnits`} validate={this.validateRequestUnit}/>
-                                                  <ErrorMessage component="div" className="error" name={`data.databases.${dbIndex}.collections.${colIndex}.scheduleItems.${schedIndex}.requestUnits`}/>
+                                                  <Field name={`data.databases.${dbIndex}.collections.${colIndex}.schedules.${schedIndex}.requestUnits`} validate={this.validateRequestUnit}/>
+                                                  <ErrorMessage component="div" className="error" name={`data.databases.${dbIndex}.collections.${colIndex}.schedules.${schedIndex}.requestUnits`}/>
 
                                                   <button type="button" onClick={() =>arrayHelpers.remove(schedIndex)}>Remove Schedule</button>
                                                 </div>
@@ -218,11 +252,12 @@ class AccountSchedule extends React.Component {
               {database.collections.map(collection => {
                 return (
                   <div key={collection.name}>
-                    Collection: {collection.name}
-                    {collection.scheduleItems.map(schedule => {
+                    Collection: {collection.name}<br/>
+                    Timezone: {collection.timezone}
+                    {collection.schedules.map(schedule => {
                       return (
-                        <div key={schedule.startHourUTC}>
-                          {schedule.startHourUTC}: {schedule.requestUnits} RUs
+                        <div key={schedule.startHour}>
+                          {schedule.startHour}: {schedule.requestUnits} RUs
                         </div>
                       );
                     })}
@@ -251,5 +286,34 @@ class AccountSchedule extends React.Component {
       : this._renderAccount(this.state.account);
   }
 }
+
+class MySelect extends React.Component {
+  handleChange = value => {
+    // this is going to call setFieldValue and manually update values.topcis
+    this.props.onChange(this.props.propName, value.value);
+  };
+
+  handleBlur = () => {
+    // this is going to call setFieldTouched and manually update touched.topcis
+    this.props.onBlur(this.props.propName, true);
+  };
+
+  render() {
+    let currentValue = timeZones.find((tz)=> tz.value === this.props.value);
+    return (
+      <div style={{ margin: '1rem 0' }}>
+        <Select
+          id={this.props.propName}
+          options={timeZones}
+          multi={false}
+          onChange={this.handleChange.bind(this)}
+          onBlur={this.handleBlur.bind(this)}
+          value={currentValue}
+        />
+      </div>
+    );
+  }
+}
+
 
 export default AccountSchedule;
