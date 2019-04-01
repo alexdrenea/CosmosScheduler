@@ -17,3 +17,38 @@
   border-style: solid;
   margin: 5px;
 }
+
+.schedule-field-property{
+  font-weight: bolder;
+  margin-right: 3px;
+  margin-bottom: 3px;
+}
+
+.schedule-database {
+  border: 0px;
+  border-left: 6px darkorange;
+  border-style: solid;
+  padding: 3px 6px; 
+  margin: 6px 6px 3px 0px;
+}
+
+.schedule-collection {
+  border: 0px;
+  border-left: 6px darkcyan;
+  border-style: solid;
+  padding: 3px 6px; 
+  margin: 3px 6px 3px 0px;
+}
+
+.schedule-schedule {
+  border: 0px;
+  border-style: solid;
+  padding: 0px; 
+  margin: 0px;
+}
+
+.add-schedule-popup {
+  overflow-x: hidden;
+  overflow-y: scroll;
+  height: 80vh;
+}

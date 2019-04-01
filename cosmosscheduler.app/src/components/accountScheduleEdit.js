@@ -26,7 +26,6 @@ class AccountScheduleEdit extends React.Component {
 
   render() {
     return (
-      <ul className="schedule-item">
         <Formik
           initialValues={this.props.data}
           validationSchema = {YupValidationSchema}
@@ -40,105 +39,128 @@ class AccountScheduleEdit extends React.Component {
                   }
               });
           }}
-          validateOnChange= {false}
+          validateOnChange= {true}
           validateOnBlur = {true}
           render = { formProps => {
             console.log(formProps);
             return (
-              <Form>
-                  {this.props.isNewAccount ? 
-                    <div>
-                      Account Name: 
-                      <Field name="accountName" placeholder="Account Name"/>
-                      <ErrorMessage component="div" className="error" name="accountName"/>
-                      Account Key:
-                      <Field name="accountKey" placeholder="Account Key"/>
-                      <ErrorMessage component="div" className="error" name="accountKey"/>
-                    </div>
-                  : 
-                    <div>
-                      <div>Account Name: {formProps.values.accountName}</div>
-                      <div>Account Key: ******</div>
-                    </div>
-                }               
+              <Form className="mui-form mui-container-fluid">
+                <div className="mui-row">
+                  <div className="mui-textfield mui-textfield--float-label mui-col-md-4">
+                    <Field name="accountName" disabled={!this.props.isNewAccount}/>
+                    <label>Account name</label>
+                    {/* <ErrorMessage component="div" className="error" name="accountName"/> */}
+                  </div>
+                  <div className="mui-textfield mui-textfield--float-label mui-col-md-8">
+                    <Field name="accountKey" disabled={!this.props.isNewAccount}/>
+                    <label>Account key</label>
+                    {/* <ErrorMessage component="div" className="error" name="accountKey"/> */}
+                  </div>
+                </div>
                 <FieldArray //Databases
                   name="databases"
                   render={arrayHelpers => (
                     <div>
+                      <ul className="mui-tabs__bar mui-tabs__bar">
+                        {formProps.values.databases.map(
+                          (database, dbIndex) => 
+                            <li className={dbIndex === 0 ? 'mui--is-active' : ''} key={`db.header-${dbIndex}`}>
+                              <a data-mui-toggle="tab" data-mui-controls={`db-${dbIndex}`}>
+                                 {database.name || "[empty name]"}
+                                 <button className="mui-col-md-1 mui-btn mui-btn--flat mui-btn--danger fas fa-trash" type="button" onClick={() => arrayHelpers.remove(dbIndex)}/>
+                              </a>
+                            </li>
+                        )}
+                        <button className="mui-btn mui-btn--flat mui-btn--primary fas fa-plus" type="button" onClick={() => arrayHelpers.push(getEmptyDatabase())}> New Database</button>
+                      </ul>
                       {formProps.values.databases.map(
                         (database, dbIndex) => (
-                          <div key={`db.${dbIndex}`}>
-                            Database: 
-                            <Field name={`databases.${dbIndex}.name`}/>
-                            <ErrorMessage component="div" className="error" name={`databases.${dbIndex}.name`} />
-                           
+                          <div key={`db-${dbIndex}`} id={`db-${dbIndex}`} className={dbIndex === 0 ? 'mui--is-active mui-tabs__pane schedule-database schedule-box' : 'mui-tabs__pane schedule-database schedule-box'}>
+                            <div className="mui-textfield mui-textfield--float-label">
+                              <Field name={`databases.${dbIndex}.name`}/>
+                              <label>Database name</label>
+                              {/* <ErrorMessage component="div" className="error" name={`databases.${dbIndex}.name`} /> */}
+                            </div>
                             <FieldArray //Collections
                               name={`databases.${dbIndex}.collections`}
                               render={arrayHelpers => (
                                 <div>
                                   {formProps.values.databases[dbIndex].collections.map((collection, colIndex) => (
-                                    <div key={`col.${colIndex}`}>
-                                      Collection:
-                                      <Field name={`databases.${dbIndex}.collections.${colIndex}.name`}/>
-                                      <ErrorMessage component="div" className="error" name={`databases.${dbIndex}.collections.${colIndex}.name`}/>
-                                      Timezone:
-                                      <TimezoneSelect
-                                        propName={`databases.${dbIndex}.collections.${colIndex}.timezone`}
-                                        value={formProps.values.databases[dbIndex].collections[colIndex].timezone}
-                                        onChange={formProps.setFieldValue}
-                                        onBlur={formProps.setFieldTouched}
-                                      />
-                                      <ErrorMessage component="div" className="error" name={`databases.${dbIndex}.collections.${colIndex}.timezone`}/>
-
-                                      <FieldArray //Schedules
-                                        name={`databases.${dbIndex}.collections.${colIndex}.schedules`}
-                                        render={arrayHelpers => (
-                                          <div>
-                                            {formProps.values.databases[dbIndex].collections[colIndex].schedules.map(
-                                              (schedule, schedIndex) => (
-                                                <div key={`sched.${schedIndex}`}>
-                                                  Start hour:{" "}
-                                                  <TimePicker 
-                                                    onChange={(value)=>formProps.setFieldValue(`databases.${dbIndex}.collections.${colIndex}.schedules.${schedIndex}.startHour`, value / 3600) } 
-                                                    start="00:00" 
-                                                    end="23:00" 
-                                                    step={60}
-                                                    value={formProps.values.databases[dbIndex].collections[colIndex].schedules[schedIndex].startHour * 3600} 
-                                                  />
-                                                  Request Units:{" "}
-                                                  <Field name={`databases.${dbIndex}.collections.${colIndex}.schedules.${schedIndex}.requestUnits`}/>
-                                                  <ErrorMessage component="div" className="error" name={`databases.${dbIndex}.collections.${colIndex}.schedules.${schedIndex}.requestUnits`}/>
-
-                                                  <button type="button" onClick={() =>arrayHelpers.remove(schedIndex)}>Remove Schedule</button>
-                                                </div>
-                                              )
-                                            )}
-                                            <button type="button" onClick={() => arrayHelpers.push(getEmptySchedule())}>Add Schedule</button>
+                                    <div key={`col.${colIndex}`} className="mui-panel schedule-collection schedule-box ">
+                                      <div className="mui-row">
+                                        <div className="mui-col-md-11">
+                                          <div className="mui-textfield mui-textfield--float-label mui-col-md-4">
+                                            <Field name={`databases.${dbIndex}.collections.${colIndex}.name`}/>
+                                            <label>Collection name</label>
+                                            {/* <ErrorMessage component="div" className="error" name={`databases.${dbIndex}.collections.${colIndex}.name`}/> */}
                                           </div>
-                                        )}
-                                      />
-                                      <button type="button" onClick={() => arrayHelpers.remove(colIndex)}>Remove Collection</button>
+                                          <div className="mui-col-md-8">
+                                            <TimezoneSelect
+                                              propName={`databases.${dbIndex}.collections.${colIndex}.timezone`}
+                                              value={formProps.values.databases[dbIndex].collections[colIndex].timezone}
+                                              onChange={formProps.setFieldValue}
+                                              onBlur={formProps.setFieldTouched}
+                                              required
+                                            />
+                                            {/* <ErrorMessage component="div" className="error" name={`databases.${dbIndex}.collections.${colIndex}.timezone`}/> */}
+                                          </div>
+                                          <FieldArray //Schedules
+                                            name={`databases.${dbIndex}.collections.${colIndex}.schedules`}
+                                            render={arrayHelpers => (
+                                              <div>
+                                                {collection.schedules.map(
+                                                  (schedule, schedIndex) => (
+                                                    <div key={`sched.${schedIndex}`} className="schedule-schedule schedule-box mui-row">
+                                                      <div className="mui-select mui-col-md-4">
+                                                        <TimePicker 
+                                                          onChange={(value)=>formProps.setFieldValue(`databases.${dbIndex}.collections.${colIndex}.schedules.${schedIndex}.startHour`, value / 3600) } 
+                                                          start="00:00" 
+                                                          end="23:00" 
+                                                          step={60}
+                                                          value={formProps.values.databases[dbIndex].collections[colIndex].schedules[schedIndex].startHour * 3600} 
+                                                          required
+                                                        />
+                                                        <label>Time</label>
+                                                      </div>
+                                                      <div className="mui-textfield mui-textfield--float-label mui-col-md-4">
+                                                        <Field name={`databases.${dbIndex}.collections.${colIndex}.schedules.${schedIndex}.requestUnits`}/>
+                                                        <label>Request Units</label>
+                                                        {/* <ErrorMessage component="div" className="error" name={`databases.${dbIndex}.collections.${colIndex}.schedules.${schedIndex}.requestUnits`}/> */}
+                                                      </div>
+                                                    
+                                                      <button type="button" className="mui-btn mui-btn--flat mui-btn--danger fas fa-trash" onClick={() =>arrayHelpers.remove(schedIndex)}/>
+                                                    </div>
+                                                  )
+                                                )}
+                                                <div className="mui-row">
+                                                  <button className="mui-btn mui-btn--flat mui-btn--primary fas fa-plus mui-col-md-offset-1 mui-col-md-10 mui--text-center" type="button" onClick={() => arrayHelpers.push(getEmptySchedule())}> New Schedule</button>
+                                                </div>
+                                              </div>
+                                            )}
+                                          />
+                                        </div>
+                                        <button className="mui-col-md-1 mui-btn mui-btn--flat mui-btn--danger fas fa-trash" type="button" onClick={() => arrayHelpers.remove(colIndex)}/>
+                                      </div>
                                     </div>
                                   ))}
-                                  <button type="button" onClick={() => arrayHelpers.push(getEmptyCollection())}>Add Collection</button>
+                                  <button className="mui-btn mui-btn--flat mui-btn--primary fas fa-plus" type="button" onClick={() => arrayHelpers.push(getEmptyCollection())}> New Collection</button>
                                 </div>
                               )}
                             />
-                            <button type="button" onClick={() => arrayHelpers.remove(dbIndex)}>Remove Database</button>
                           </div>
                         )
                       )}
-                      <button type="button" onClick={() => arrayHelpers.push(getEmptyDatabase())}>Add Database</button>
+  
+                      {/* <button type="button" onClick={() => arrayHelpers.push(getEmptyDatabase())}>Add Database</button> */}
                     </div>
-                  )}
+                   )}
                 />
-                <button type="submit" disabled={formProps.isSubmitting}>Save</button>
-                <button disabled={formProps.isSubmitting} onClick={() => this.props.closeCallback()}>Cancel</button>
+                <button className="mui-btn mui-btn--primary" type="submit" disabled={formProps.isSubmitting}>Save</button>
+                <button className="mui-btn"  disabled={formProps.isSubmitting} onClick={() => this.props.closeCallback()}>Cancel</button>
               </Form>
             );
           }} 
         />
-      </ul>
     );
   }
 
@@ -201,6 +223,8 @@ class TimezoneSelect extends React.Component {
           onChange={this.handleChange.bind(this)}
           onBlur={this.handleBlur.bind(this)}
           value={currentValue}
+          className="mui-textfield"
+          placeholder="Timezone"
         />
       </div>
     );

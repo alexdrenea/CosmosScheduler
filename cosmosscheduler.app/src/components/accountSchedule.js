@@ -5,25 +5,40 @@ class AccountSchedule extends React.Component {
   render() {
     const account = this.props.account;
     return (
-      <ul className="schedule-item">
-        <div>Account Name: {account.accountName}</div>
-        <div>Account Key: ******</div>
+      <div className="mui-panel">
+        <div className="mui--text-headline">
+          <span className="schedule-field-property">Account Name:</span>
+          <span>{account.accountName}</span>
+        </div>
+        {/* <div>Account Key: ******</div> */}
         {account.databases.map(database => {
           return (
-            <div key={database.name}>
-              Database: {database.name}
+            <div key={database.name} className="schedule-database schedule-box">
+              <div>
+                <span className="schedule-field-property">Database:</span>
+                <span>{database.name}</span>
+              </div>
               {database.collections.map(collection => {
                 return (
-                  <div key={collection.name}>
-                    Collection: {collection.name}<br/>
-                    Timezone: {collection.timezone}
-                    {collection.schedules.map(schedule => {
-                      return (
-                        <div key={schedule.startHour}>
-                          {schedule.startHour}: {schedule.requestUnits} RUs
-                        </div>
-                      );
-                    })}
+                  <div key={collection.name} className="schedule-collection schedule-box">
+                    <div>
+                      <span className="schedule-field-property">Collection:</span>
+                      <span>{collection.name}</span>
+                    </div>
+                    <div>
+                      <span className="schedule-field-property">Timezone:</span>
+                      <span>{collection.timezone}</span>
+                    </div>
+                    <span className="schedule-field-property"> Schedules:</span>
+                    <div className="schedule-schedule">
+                      {collection.schedules.map(schedule => {
+                        return (
+                          <div key={schedule.startHour}>
+                            {schedule.startHour}:00  -> {schedule.requestUnits} RUs
+                          </div>
+                        );
+                      })}
+                      </div>
                   </div>
                 );
               })}
@@ -32,10 +47,10 @@ class AccountSchedule extends React.Component {
         })}
 
         <div>
-          <button onClick={this.props.onEdit}>Edit</button>
-          <button onClick={this.props.onRemove}>Remove</button>
+          <button className="mui-btn mui-btn--primary" onClick={this.props.onEdit}>Edit</button>
+          <button className="mui-btn mui-btn--danger" color="danger" onClick={this.props.onRemove}>Remove</button>
         </div>
-      </ul>
+      </div>
     );
   }
 }

@@ -118,8 +118,8 @@ class AccountSchedules extends React.Component {
       return(
         <Popup closeOnDocumentClick={false} open={true} onClose={()=>this.setState({editingAccount: null})} modal>
         {close => (
-          <div className="modal">
-            <div className="header"> {isNewAccount ? "Add new Account" : "Edit account"} </div>
+          <div className="modal add-schedule-popup">
+            <div className="mui--text-headline mui--text-center"> {isNewAccount ? "Add new Account" : "Edit account"} </div>
             <div className="content">
               <AccountScheduleEdit 
                     key="account_edit" 
@@ -150,7 +150,7 @@ class AccountSchedules extends React.Component {
                         onRemove={()=> this.showSweetAlert("Remove account", "Are you sure you want to remove this account", "confirm",  () => {this._removeAccount(account.accountName)}, "danger","Yes",true,"default","No")}/>
             })}
             
-            <button className="button" onClick={()=>this.setState({editingAccount: getNewAccount()})}>Add</button>
+            <button className="mui-btn mui-btn--flat mui-btn--primary fas fa-plus" onClick={()=>this.setState({editingAccount: getNewAccount()})}>New Account</button>
 
             {this.renderEditPopup()}
 
