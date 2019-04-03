@@ -4,7 +4,7 @@ import AccountSchedules from './accountSchedules'
 import LoadingSpinner from './loadingSpinner'
 import Header from './header'
 
-import {API_URL, API_HEADERS} from '../api/const';
+import {API_URL, API_HEADERS} from '../const';
 import '../styles/app.css';
 import accounts from '../mockdata/accounts.json';
 
@@ -21,6 +21,7 @@ class App extends React.Component {
   }
   componentDidMount() {
     this._fetchSchedules();
+    console.log(API_URL)
   }
 
   _fetchSchedules() {

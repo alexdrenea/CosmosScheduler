@@ -7,7 +7,7 @@ import Popup from 'reactjs-popup'
 import '../styles/accountSchedule.css';
 
 import {getNewAccount} from '../actions/accountSchedule'
-import {API_URL, API_HEADERS} from '../api/const';
+import {API_URL, API_HEADERS} from '../const';
 
 
 class AccountSchedules extends React.Component {
