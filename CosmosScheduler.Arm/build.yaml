@@ -29,12 +29,12 @@ jobs:
     displayName: Restore
     inputs:
       command: restore
-      projects: '**\*.sln'
+      projects: '**/*.sln'
 
   - task: DotNetCoreCLI@2
     displayName: Build
     inputs:
-      projects: '**\*.sln'
+      projects: '**/*.sln'
       arguments: '--configuration Release'
 
   - task: DotNetCoreCLI@2
@@ -42,7 +42,7 @@ jobs:
     inputs:
       command: publish
       publishWebProjects: false
-      projects: '**\*.sln'
+      projects: '**/*.sln'
       arguments: '--configuration Release --output $(build.artifactstagingdirectory)'
       zipAfterPublish: True
 
@@ -51,16 +51,15 @@ jobs:
     inputs:
       PathtoPublish: '$(build.artifactstagingdirectory)'
       ArtifactName: 'drop-api'
-    condition: succeededOrFailed()
 
   - task: Npm@1
     displayName: 'npm install'
     inputs:
-      workingDir: 'cosmosscheduler.app'
+      workingDir: 'CosmosScheduler.App'
       verbose: false
 
   - powershell: |  
-       $settingsFileName = "$(Build.SourcesDirectory)/cosmosscheduler.app/public/settings.js"
+       $settingsFileName = "$(Build.SourcesDirectory)/CosmosScheduler.App/public/settings.js"
        Set-Content -Path $settingsFileName 'var API_URL = "//$(applicationName).azurewebsites.net/api/schedules";'
        Get-Content -Path $settingsFileName
     displayName: 'Update settings.js file'
@@ -69,7 +68,7 @@ jobs:
     displayName: 'npm build'
     inputs:
       command: custom
-      workingDir: 'cosmosscheduler.app'
+      workingDir: 'CosmosScheduler.App'
       verbose: false
       customCommand: 'run-script build'
 
