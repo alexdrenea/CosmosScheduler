@@ -1,0 +1,85 @@
+resources:
+- repo: self
+
+trigger:
+  batch: true
+  branches:
+    include:
+    - features/*
+    - master
+    - develop
+  paths:
+    exclude:
+    - README.md
+
+jobs:
+
+- job: Job_1
+  displayName: Build 
+  condition: succeeded()
+  pool:
+    name: Hosted Ubuntu 1604
+    demands: npm
+
+  variables:
+    applicationName: 'cosmosScheduler123'
+
+  steps:
+  - task: DotNetCoreCLI@2
+    displayName: Restore
+    inputs:
+      command: restore
+      projects: '**\*.sln'
+
+  - task: DotNetCoreCLI@2
+    displayName: Build
+    inputs:
+      projects: '**\*.sln'
+      arguments: '--configuration Release'
+
+  - task: DotNetCoreCLI@2
+    displayName: Publish
+    inputs:
+      command: publish
+      publishWebProjects: false
+      projects: '**\*.sln'
+      arguments: '--configuration Release --output $(build.artifactstagingdirectory)'
+      zipAfterPublish: True
+
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Artifact drop-api'
+    inputs:
+      PathtoPublish: '$(build.artifactstagingdirectory)'
+      ArtifactName: 'drop-api'
+    condition: succeededOrFailed()
+
+  - task: Npm@1
+    displayName: 'npm install'
+    inputs:
+      workingDir: 'cosmosscheduler.app'
+      verbose: false
+
+  - powershell: |  
+       $settingsFileName = "$(Build.SourcesDirectory)/cosmosscheduler.app/public/settings.js"
+       Set-Content -Path $settingsFileName 'var API_URL = "//$(applicationName).azurewebsites.net/api/schedules";'
+       Get-Content -Path $settingsFileName
+    displayName: 'Update settings.js file'
+
+  - task: Npm@1
+    displayName: 'npm build'
+    inputs:
+      command: custom
+      workingDir: 'cosmosscheduler.app'
+      verbose: false
+      customCommand: 'run-script build'
+
+  - task: ArchiveFiles@2
+    displayName: 'Archive webapp'
+    inputs:
+      rootFolderOrFile: cosmosscheduler.app/build
+
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Artifact: drop-app'
+    inputs:
+      PathtoPublish: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+      ArtifactName: 'drop-app'

@@ -1,1 +1,1 @@
-var API_URL = "http://YOUR-URL";
+var API_URL = "//localhost:7071/api/schedules";
