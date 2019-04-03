@@ -82,3 +82,9 @@ jobs:
     inputs:
       PathtoPublish: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
       ArtifactName: 'drop-app'
+
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Artifact: drop-arm'
+    inputs:
+      PathtoPublish: '$(Build.SourcesDirectory)/CosmosScheduler.Arm/*.*'
+      ArtifactName: 'drop-arm'
