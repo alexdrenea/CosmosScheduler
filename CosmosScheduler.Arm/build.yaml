@@ -55,11 +55,11 @@ jobs:
   - task: Npm@1
     displayName: 'npm install'
     inputs:
-      workingDir: 'CosmosScheduler.App'
+      workingDir: 'cosmosscheduler.app'
       verbose: false
 
   - powershell: |  
-       $settingsFileName = "$(Build.SourcesDirectory)/CosmosScheduler.App/public/settings.js"
+       $settingsFileName = "$(Build.SourcesDirectory)/cosmosscheduler.app/public/settings.js"
        Set-Content -Path $settingsFileName 'var API_URL = "//$(applicationName).azurewebsites.net/api/schedules";'
        Get-Content -Path $settingsFileName
     displayName: 'Update settings.js file'
@@ -68,7 +68,7 @@ jobs:
     displayName: 'npm build'
     inputs:
       command: custom
-      workingDir: 'CosmosScheduler.App'
+      workingDir: 'cosmosscheduler.app'
       verbose: false
       customCommand: 'run-script build'
 
