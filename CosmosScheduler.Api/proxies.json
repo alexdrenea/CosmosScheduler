@@ -7,6 +7,12 @@
       },
       "backendUri": "https://$(applicationName).blob.core.windows.net/$(webAppContainerName)/index.html"
     },
+    "api": {
+      "matchCondition": {
+        "route": "/api/{*path}"
+      },
+      "backendUri": "https://$(applicationName).azurewebsites.net/api/{path}"
+    },
     "all": {
       "matchCondition": {
         "route": "/{*path}"
