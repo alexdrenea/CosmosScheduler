@@ -8,6 +8,13 @@
       "metadata": {
         "description": "The name of the app that you wish to create."
       }
+    },
+    "aadClientId": {
+      "type": "string",
+      "defaultValue": "---",
+      "metadata": {
+        "description": "The name of the app that you wish to create."
+      }
     }
   },
   "variables": {
@@ -76,6 +83,23 @@
         "[resourceId('microsoft.insights/components', variables('appInsightsName'))]",
         "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]"
       ],
+      "resources": [{
+        "name": "[concat(variables('functionAppName'), '/authsettings')]",
+        "apiVersion": "2016-08-01",
+        "type": "Microsoft.Web/sites/config",
+        "location": "[resourceGroup().location]",
+        "dependsOn": [
+          "[resourceId('Microsoft.Web/sites', variables('functionAppName'))]"
+        ],
+        "properties": {
+          "enabled": true,
+          "unauthenticatedClientAction": "RedirectToLoginPage",
+          "tokenStoreEnabled": true,
+          "defaultProvider": "AzureActiveDirectory",
+          "clientId": "[parameters('aadClientId')]",
+          "issuer": "[concat('https://sts.windows.net/', subscription().tenantId, '/')]"
+        }
+      }],
       "properties": {
         "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('hostingPlanName'))]",
         "siteConfig": {

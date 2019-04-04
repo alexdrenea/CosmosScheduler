@@ -1,7 +1,7 @@
 Param(
     [string] $ApplicationName = 'cosmosscheduler123',
     [string] $Location = 'canadacentral',
-    [string] $TemplateFile = './armtemplate.json',
+    [string] $TemplateFile = './armtemplate.w.identity',
     [switch] $ValidateOnly
 )
 
