@@ -88,7 +88,7 @@ jobs:
     displayName: 'Publish Artifact: drop-app'
     inputs:
       PathtoPublish: 'cosmosscheduler.app/build'
-      ArtifactName: 'drop-app-zip'
+      ArtifactName: 'drop-app'
 
 
   - task: PublishBuildArtifacts@1
