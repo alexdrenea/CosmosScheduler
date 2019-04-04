@@ -8,7 +8,15 @@
       "metadata": {
         "description": "The name of the app that you wish to create."
       }
+    },
+    "webAppContainerName": {
+      "type": "string",
+      "defaultValue": "webapp",
+      "metadata": {
+        "description": "The name of the app that you wish to create."
+      }
     }
+    
   },
   "variables": {
     "functionAppName": "[parameters('appName')]",
@@ -31,7 +39,20 @@
       "kind": "Storage",
       "properties": {
           "supportsHttpsTrafficOnly": false
-      }
+      },
+      "resources": [
+        {
+          "type": "blobServices/containers",
+          "apiVersion": "2018-03-01-preview",
+          "name": "[concat('default/', parameters('webAppContainerName'))]",
+          "dependsOn": [
+            "[variables('storageAccountName')]"
+          ],
+          "properties": {
+            "publicAccess": "Blob"
+          }
+        }
+      ]
     },
     {
       "type": "microsoft.insights/components",
