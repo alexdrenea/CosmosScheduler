@@ -44,7 +44,7 @@ jobs:
       publishWebProjects: false
       projects: '**/*.sln'
       arguments: '--configuration Release --output $(build.artifactstagingdirectory)'
-      zipAfterPublish: True
+      zipAfterPublish: False
 
   - task: PublishBuildArtifacts@1
     displayName: 'Publish Artifact drop-api'
@@ -75,14 +75,21 @@ jobs:
   - task: ArchiveFiles@2
     displayName: 'Archive webapp'
     inputs:
-      rootFolderOrFile: cosmosscheduler.app/build
+      rootFolderOrFile: 'cosmosscheduler.app/build'
       includeRootFolder: false
+
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Artifact: drop-app-zip'
+    inputs:
+      PathtoPublish: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+      ArtifactName: 'drop-app-zip'
 
   - task: PublishBuildArtifacts@1
     displayName: 'Publish Artifact: drop-app'
     inputs:
-      PathtoPublish: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
-      ArtifactName: 'drop-app'
+      PathtoPublish: 'cosmosscheduler.app/build'
+      ArtifactName: 'drop-app-zip'
+
 
   - task: PublishBuildArtifacts@1
     displayName: 'Publish Artifact: drop-arm'
