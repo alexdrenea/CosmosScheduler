@@ -52,17 +52,12 @@ jobs:
       PathtoPublish: '$(build.artifactstagingdirectory)'
       ArtifactName: 'drop-api'
 
+
   - task: Npm@1
     displayName: 'npm install'
     inputs:
       workingDir: 'cosmosscheduler.app'
       verbose: false
-
-  - powershell: |  
-       $settingsFileName = "$(Build.SourcesDirectory)/cosmosscheduler.app/public/settings.js"
-       Set-Content -Path $settingsFileName 'var API_URL = "//$(applicationName).azurewebsites.net/api/schedules";'
-       Get-Content -Path $settingsFileName
-    displayName: 'Update settings.js file'
 
   - task: Npm@1
     displayName: 'npm build'
@@ -71,18 +66,6 @@ jobs:
       workingDir: 'cosmosscheduler.app'
       verbose: false
       customCommand: 'run-script build'
-
-  - task: ArchiveFiles@2
-    displayName: 'Archive webapp'
-    inputs:
-      rootFolderOrFile: 'cosmosscheduler.app/build'
-      includeRootFolder: false
-
-  - task: PublishBuildArtifacts@1
-    displayName: 'Publish Artifact: drop-app-zip'
-    inputs:
-      PathtoPublish: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
-      ArtifactName: 'drop-app-zip'
 
   - task: PublishBuildArtifacts@1
     displayName: 'Publish Artifact: drop-app'
