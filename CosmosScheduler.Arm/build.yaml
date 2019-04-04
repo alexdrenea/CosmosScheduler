@@ -75,7 +75,7 @@ jobs:
   - task: ArchiveFiles@2
     displayName: 'Archive webapp'
     inputs:
-      rootFolderOrFile: cosmosscheduler.app/build
+      rootFolderOrFile: cosmosscheduler.app/build/**
 
   - task: PublishBuildArtifacts@1
     displayName: 'Publish Artifact: drop-app'
