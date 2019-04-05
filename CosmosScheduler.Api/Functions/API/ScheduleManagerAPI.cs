@@ -20,7 +20,7 @@ namespace CosmosScheduler.Functions.API
         private const string CLIENT_ACCOUNTKEY_MASK = "********";
         private const string ROUTE_NAME = "schedules";
 
-        [FunctionName("GetSchedules")]
+        [FunctionName("Api_GetSchedules")]
         public static async Task<IActionResult> GetSchedules(
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = ROUTE_NAME)] HttpRequest req,
             [Table("%ScheduleTableName%")] CloudTable inTable,
@@ -37,7 +37,7 @@ namespace CosmosScheduler.Functions.API
             return new OkObjectResult(schedules);
         }
 
-        [FunctionName("GetSchedule")]
+        [FunctionName("Api_GetSchedule")]
         public static async Task<IActionResult> GetSchedule(
           [HttpTrigger(AuthorizationLevel.Function, "get", Route = ROUTE_NAME + "/{accountName}")] HttpRequest req,
           string accountName,
@@ -54,7 +54,7 @@ namespace CosmosScheduler.Functions.API
             return new OkObjectResult(schedule);
         }
 
-        [FunctionName("AddSchedule")]
+        [FunctionName("Api_AddSchedule")]
         public static async Task<IActionResult> AddSchedule(
             [HttpTrigger(AuthorizationLevel.Function, "post", Route = ROUTE_NAME)] HttpRequest req,
             [Table("%ScheduleTableName%")] CloudTable table,
@@ -78,7 +78,7 @@ namespace CosmosScheduler.Functions.API
             return success ? (ActionResult)new CreatedResult(scheduleRequest.AccountName.ToLower(), "") : (ActionResult)new StatusCodeResult(500);
         }
 
-        [FunctionName("UpdateSchedule")]
+        [FunctionName("Api_UpdateSchedule")]
         public static async Task<IActionResult> UpdateSchedule(
             [HttpTrigger(AuthorizationLevel.Function, "put", Route = ROUTE_NAME)] HttpRequest req,
             [Table("%ScheduleTableName%")] CloudTable table,
@@ -109,7 +109,7 @@ namespace CosmosScheduler.Functions.API
         }
 
 
-        [FunctionName("DeleteSchedule")]
+        [FunctionName("Api_DeleteSchedule")]
         public static async Task<IActionResult> DeleteSchedule(
           [HttpTrigger(AuthorizationLevel.Function, "delete", Route = ROUTE_NAME + "/{accountName}" )] HttpRequest req,
           string accountName,

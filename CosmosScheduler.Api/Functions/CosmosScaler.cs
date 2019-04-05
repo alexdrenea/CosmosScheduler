@@ -56,10 +56,15 @@ namespace CosmosScheduler
             var scaleDownDelayBeforeExactHourInSeconds = int.Parse(Environment.GetEnvironmentVariable("ScaleDownDelayBeforeExactHourInSeconds", EnvironmentVariableTarget.Process));
             var scaleUpDelayAfterExactHourInSeconds = int.Parse(Environment.GetEnvironmentVariable("ScaleUpDelayAfterExactHourInSeconds", EnvironmentVariableTarget.Process));
 
+            log.LogInformation($"ScaleTime function executed at: {DateTime.UtcNow.ToString("HH:mm:ss - dd/MM/yyyy")} UTC");
+
             //Get all entities from table
             var tableEntities = await inTable.ExecuteQuerySegmentedAsync(new TableQuery<ScheduleTableEntity>(), null);
+            log.LogInformation($" - found {tableEntities.Count()} table entities");
             //Convert them to the schedule model
-            var schedules = tableEntities.Select(Util.GetScheduleFromTableEntity).Where(r => r != null);
+            var schedules = tableEntities.Select(Util.GetScheduleFromTableEntity).Where(r => r != null).ToArray();
+            log.LogInformation($" - found {schedules.Count()} schedules");
+
             //Get a list of resize requests that are due this hour
             var resizesThisHour = schedules.SelectMany(r =>
                                         r.Databases.SelectMany(d =>
@@ -72,6 +77,7 @@ namespace CosmosScheduler
                                                              Collection = c.Name,
                                                              RequestedRUs = c.Schedules.FirstOrDefault(s => s.IsScheduleDueNextHour(c.Timezone)).RequestUnits
                                                          }))).ToArray();
+            log.LogInformation($" - found {resizesThisHour.Count()} collections to resize next hour");
 
             //Populate resize items with current RUs
             foreach (var r in resizesThisHour)
@@ -86,25 +92,33 @@ namespace CosmosScheduler
             foreach (var r in resizesThisHour)
             {
                 if (r.CurrentRUs == -1) //todo: log invalid
+                {
+                    log.LogInformation($" - invalid configuration for {r.AccountName}-{r.Database}-{r.Collection}.");
                     continue;
-
+                }
                 if (r.CurrentRUs > r.RequestedRUs) //scaledown request
+                {
                     await scaleDownQueue.AddMessageAsync(message: new CloudQueueMessage(JsonConvert.SerializeObject(r)),
-                                                         timeToLive: TimeSpan.FromMinutes(30),
-                                                         initialVisibilityDelay: TimeSpan.FromSeconds(Math.Max(0, secondsToExactHour - scaleDownDelayBeforeExactHourInSeconds)),
-                                                         options: null,
-                                                         operationContext: null);
-
+                                                        timeToLive: TimeSpan.FromMinutes(30),
+                                                        initialVisibilityDelay: TimeSpan.FromSeconds(Math.Max(0, secondsToExactHour - scaleDownDelayBeforeExactHourInSeconds)),
+                                                        options: null,
+                                                        operationContext: null);
+                    log.LogInformation($" - scale down {r.AccountName}-{r.Database}-{r.Collection} from {r.CurrentRUs} RUs to {r.RequestedRUs} RUs");
+                }
 
                 if (r.CurrentRUs < r.RequestedRUs) //scaleup request
+                {
                     await scaleUpQueue.AddMessageAsync(message: new CloudQueueMessage(JsonConvert.SerializeObject(r)),
-                                                         timeToLive: TimeSpan.FromMinutes(30),
-                                                         initialVisibilityDelay: TimeSpan.FromSeconds(secondsToExactHour + scaleUpDelayAfterExactHourInSeconds),
-                                                         options: null,
-                                                         operationContext: null);
+                                                        timeToLive: TimeSpan.FromMinutes(30),
+                                                        initialVisibilityDelay: TimeSpan.FromSeconds(secondsToExactHour + scaleUpDelayAfterExactHourInSeconds),
+                                                        options: null,
+                                                        operationContext: null);
+
+                    log.LogInformation($" - scale up {r.AccountName}-{r.Database}-{r.Collection} from {r.CurrentRUs} RUs to {r.RequestedRUs} RUs");
+                }
             }
 
-            log.LogInformation($"C# Timer trigger function executed at: {DateTime.Now}");
+            log.LogInformation($"ScaleTime function execution finished.");
         }
 
 

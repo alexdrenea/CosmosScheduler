@@ -17,6 +17,7 @@ export const getEmptyCollection = () => {
   return {
     name: "",
     timezone: "",
+    isActive: true,
     schedules: [getEmptySchedule()]
   };
 }
