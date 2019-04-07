@@ -15,8 +15,14 @@
       "metadata": {
         "description": "The name of the app that you wish to create."
       }
+    },
+	"spClientId": {
+      "type": "string",
+      "defaultValue": "-",
+      "metadata": {
+        "description": "The name of the app that you wish to create."
+      }
     }
-    
   },
   "variables": {
     "functionAppName": "[parameters('appName')]",
@@ -129,7 +135,6 @@
               "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
               "value": "[reference(resourceId('microsoft.insights/components/', variables('appInsightsName')), '2015-05-01').InstrumentationKey]"
             },
-
             {
               "name": "WEBSITE_CONTENTAZUREFILECONNECTIONSTRING",
               "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('storageAccountName'), ';AccountKey=', listKeys(variables('storageAccountid'),'2015-05-01-preview').key1)]"
@@ -163,5 +168,19 @@
         }
       }
     }
-  ]
+  ],
+  "outputs":{
+	"functionAppName":{
+		"type": "string",
+		"value": "[variables('functionAppName')]"
+	},
+	"storageAccountName":{
+		"type": "string",
+		"value": "[variables('storageAccountName')]"
+	},
+	"storageAccountKey":{
+		"type": "string",
+		"value": "[listKeys(variables('storageAccountid'),'2015-05-01-preview').key1]"
+	}
+  }
 }
